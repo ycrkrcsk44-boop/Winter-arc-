@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171717">
+<title>Winter Arc Tracker</title>
+<style>
+:root{color-scheme:dark;--bg:#101010;--panel:#1b1b1b;--panel2:#242424;--text:#f5f5f5;--muted:#aaa;--accent:#d9b56d;--line:#353535;--green:#8ecf9a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#242016 0%,var(--bg) 48%);color:var(--text);font:16px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:20px 14px 40px}
+main{max-width:760px;margin:auto}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.eyebrow{color:var(--accent);font-size:.78rem;letter-spacing:.15em;font-weight:800}.date{color:var(--muted);font-size:.9rem}h1{font-size:clamp(2rem,7vw,3.2rem);line-height:1.05;margin:8px 0 18px;letter-spacing:-.04em}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}.stat,.section,.savebox{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}.stat small{display:block;color:var(--muted);font-size:.78rem}.stat strong{display:block;font-size:1.45rem;margin-top:4px}.progress-wrap{background:#343434;height:10px;border-radius:99px;overflow:hidden;margin:12px 0 7px}.progress{height:100%;width:0;background:linear-gradient(90deg,#a9843e,var(--accent));border-radius:99px;transition:width .2s}.muted{color:var(--muted);font-size:.9rem}.section{margin:14px 0}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.section h2{font-size:1.05rem;letter-spacing:.08em;margin:0;color:var(--accent)}.task{display:flex;align-items:center;gap:12px;padding:13px 4px;border-top:1px solid var(--line);cursor:pointer}.task input{appearance:none;width:23px;height:23px;flex:0 0 23px;border:2px solid #777;border-radius:7px;background:#141414;cursor:pointer;margin:0}.task input:checked{background:var(--green);border-color:var(--green)}.task input:checked:after{content:"✓";display:block;color:#102013;font-weight:900;text-align:center;line-height:19px}.task:has(input:checked) .task-name{color:#9b9b9b;text-decoration:line-through}.task-name{flex:1}.task-xp{font-size:.78rem;color:var(--muted);white-space:nowrap}.btnrow{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0}.btn{border:1px solid #4a4a4a;background:var(--panel2);color:var(--text);padding:11px 15px;border-radius:12px;font:inherit;font-weight:700;cursor:pointer}.btn.primary{background:var(--accent);color:#19150d;border-color:var(--accent)}.btn:active{transform:scale(.98)}.savebox{margin-top:18px}.savebox h2{margin:0 0 8px;font-size:1.15rem}textarea{width:100%;min-height:145px;resize:vertical;background:#111;color:var(--text);border:1px solid #454545;border-radius:12px;padding:12px;font:14px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;margin:10px 0}.fileinput{display:none}.notice{min-height:1.4em;color:var(--green);font-size:.9rem}.footer{color:#777;text-align:center;font-size:.78rem;margin:20px 0 0}
+@media(max-width:440px){.stats{gap:7px}.stat{padding:12px}.stat strong{font-size:1.2rem}.stat small{font-size:.72rem}.section{padding:13px}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top"><div class="eyebrow">DEIN DAILY PROGRESS</div><div class="date" id="dateLabel"></div></div>
+  <h1>Winter Arc <span style="color:var(--accent)">Tracker</span></h1>
+  <div class="stats">
+    <div class="stat"><small>LEVEL</small><strong id="level">1</strong></div>
+    <div class="stat"><small>GESAMT-XP</small><strong id="totalXp">0</strong></div>
+    <div class="stat"><small>HEUTE</small><strong id="doneCount">0/12</strong></div>
+  </div>
+  <div class="muted" id="progressLabel">0/200 XP bis zum nächsten Level</div>
+  <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+  <div class="muted" id="dailyLabel">Heute: 0 von 12 Aufgaben erledigt · +50 XP pro Aufgabe</div>
+
+  <section class="section" data-section="MORGENS">
+    <div class="section-head"><h2>MORGENS</h2><span class="muted" id="count-MORGENS">0/4</span></div>
+    <label class="task"><input type="checkbox" data-task="Dehnen"><span class="task-name">Dehnen</span><span class="task-xp">+50 XP</span></label>
+    <label class="task"><input type="checkbox" data-task="Eincremen + Gua Sha"><span class="task-name">Eincremen + Gua Sha</span><span class="task-xp">+50 XP</span></label>
+    <label class="task"><input type="checkbox" data-task="Banane essen"><span class="task-name">Banane essen</span><span class="task-xp">+50 XP</span></label>
+    <label class="task"><input type="checkbox" data-task="30 Minuten Spaziergang"><span class="task-name">30 Minuten Spaziergang</span><span class="task-xp">+50 XP</span></label>
+    <div class="btnrow"><button class="btn primary safe" data-safe="MORGENS">MORGENS SAFE</button></div>
+  </section>
+
+  <section class="section" data-section="MITTAGS">
+    <div class="section-head"><h2>MITTAGS</h2><span class="muted" id="count-MITTAGS">0/4</span></div>
+    <label class="task"><input type="checkbox" data-task="Mittagessen (Reis + Chicken)"><span class="task-name">Mittagessen (Reis + Chicken)</span><span class="task-xp">+50 XP</span></label>
+    <label class="task"><input type="checkbox" data-task="Workout"><span class="task-name">Workout</span><span class="task-xp">+50 XP</span></label>
+    <label class="task"><input type="checkbox" data-task="Strecken"><span class="task-name">Strecken</span><span class="task-xp">+50 XP</span></label>
+    <label class="task"><input type="checkbox" data-task="Post-Workout-Meal (etwas Kleines mit Protein und Kohlenhydraten)"><span class="task-name">Post-Workout-Meal (etwas Kleines mit Protein und Kohlenhydraten)</span><span class="task-xp">+50 XP</span></label>
+    <div class="btnrow"><button class="btn primary safe" data-safe="MITTAGS">MITTAGS SAFE</button></div>
+  </section>
+
+  <section class="section" data-section="ABENDS">
+    <div class="section-head"><h2>ABENDS</h2><span class="muted" id="count-ABENDS">0/4</span></div>
+    <label class="task"><input type="checkbox" data-task="1 Stunde Spaziergang"><span class="task-name">1 Stunde Spaziergang</span><span class="task-xp">+50 XP</span></label>
+    <label class="task"><input type="checkbox" data-task="Skyr Bowl"><span class="task-name">Skyr Bowl</span><span class="task-xp">+50 XP</span></label>
+    <label class="task"><input type="checkbox" data-task="Eincremen + Gua Sha (abends)"><span class="task-name">Eincremen + Gua Sha</span><span class="task-xp">+50 XP</span></label>
+    <label class="task"><input type="checkbox" data-task="Strecken (abends)"><span class="task-name">Strecken</span><span class="task-xp">+50 XP</span></label>
+    <div class="btnrow"><button class="btn primary safe" data-safe="ABENDS">ABENDS SAFE</button></div>
+  </section>
+
+  <section class="savebox">
+    <h2>💾 Speicherstand</h2>
+    <p class="muted">Erstelle eine Speicherstand-Nachricht oder füge einen früheren Speicherstand ein, um deinen Fortschritt wiederherzustellen.</p>
+    <div class="btnrow">
+      <button class="btn primary" id="makeSave">Speicherstand erstellen</button>
+      <button class="btn" id="copySave">Text kopieren</button>
+    </div>
+    <textarea id="saveText" placeholder="Hier erscheint dein Speicherstand. Du kannst hier auch einen alten Speicherstand einfügen …"></textarea>
+    <div class="btnrow">
+      <button class="btn primary" id="loadSave">Speicherstand laden</button>
+      <button class="btn" id="newDay">Neuer Tag</button>
+      <button class="btn" id="resetAll">Alles zurücksetzen</button>
+    </div>
+    <div class="notice" id="notice" aria-live="polite"></div>
+  </section>
+  <p class="footer">Dein Fortschritt wird auf diesem Gerät gespeichert. Exportiere regelmäßig einen Speicherstand als Backup.</p>
+</main>
+<script>
+(() => {
+  const KEY = "winterArcTracker_v1";
+  const tasks = [...document.querySelectorAll("[data-task]")];
+  const sections = ["MORGENS","MITTAGS","ABENDS"];
+  const today = () => new Date().toLocaleDateString("de-DE");
+  const defaultState = () => ({date:today(), totalXp:0, done:[], lastSection:"—"});
+  let state;
+  try { state = {...defaultState(), ...(JSON.parse(localStorage.getItem(KEY) || "{}"))}; } catch { state = defaultState(); }
+  if (!Array.isArray(state.done)) state.done = [];
+  const notice = (s) => { document.getElementById("notice").textContent = s; };
+  function persist(){ try{localStorage.setItem(KEY,JSON.stringify(state));}catch{} }
+  function level(){ return Math.floor(state.totalXp/200)+1; }
+  function render(){
+    document.getElementById("dateLabel").textContent = state.date || today();
+    document.getElementById("level").textContent = level();
+    document.getElementById("totalXp").textContent = state.totalXp;
+    const doneCount = state.done.length;
+    document.getElementById("doneCount").textContent = `${doneCount}/12`;
+    const current = state.totalXp % 200;
+    document.getElementById("progressLabel").textContent = `${current}/200 XP bis zum nächsten Level`;
+    document.getElementById("progress").style.width = `${current/2}%`;
+    document.getElementById("dailyLabel").textContent = `Heute: ${doneCount} von 12 Aufgaben erledigt · +50 XP pro Aufgabe`;
+    tasks.forEach(el => el.checked = state.done.includes(el.dataset.task));
+    sections.forEach(sec => {
+      const els = tasks.filter(el => el.closest("[data-section]").dataset.section === sec);
+      document.getElementById(`count-${sec}`).textContent = `${els.filter(el=>el.checked).length}/${els.length}`;
+    });
+  }
+  tasks.forEach(el => el.addEventListener("change", () => {
+    const name = el.dataset.task;
+    if(el.checked && !state.done.includes(name)){state.done.push(name);state.totalXp += 50;}
+    else if(!el.checked && state.done.includes(name)){state.done = state.done.filter(x=>x!==name);state.totalXp=Math.max(0,state.totalXp-50);}
+    persist(); render(); notice(el.checked ? "+50 XP hinzugefügt!" : "Aufgabe abgehakt und 50 XP abgezogen.");
+  }));
+  document.querySelectorAll(".safe").forEach(btn => btn.addEventListener("click", () => {
+    state.lastSection = btn.dataset.safe; persist(); render();
+    const message = `Winter Arc – Speicherstand\nDatum: ${state.date || today()}\nLevel: ${level()}\nGesamt-XP: ${state.totalXp}\nFortschritt bis zum nächsten Level: ${state.totalXp%200}/200 XP\nErledigte Aufgaben: ${state.done.length}/12\nLetzter abgeschlossener Abschnitt: ${state.lastSection}`;
+    document.getElementById("saveText").value = message;
+    notice(`${btn.dataset.safe} gespeichert und Speicherstand erstellt.`);
+  }));
+  document.getElementById("makeSave").addEventListener("click", () => {
+    document.getElementById("saveText").value = `Winter Arc – Speicherstand\nDatum: ${state.date || today()}\nLevel: ${level()}\nGesamt-XP: ${state.totalXp}\nFortschritt bis zum nächsten Level: ${state.totalXp%200}/200 XP\nErledigte Aufgaben: ${state.done.length}/12\nLetzter abgeschlossener Abschnitt: ${state.lastSection || "—"}\nErledigte Aufgabenliste: ${state.done.join(" | ")}`;
+    notice("Speicherstand erstellt.");
+  });
+  document.getElementById("copySave").addEventListener("click", async () => {
+    const text = document.getElementById("saveText").value;
+    if(!text){notice("Erstelle zuerst einen Speicherstand.");return;}
+    try{await navigator.clipboard.writeText(text);notice("Speicherstand kopiert!");}
+    catch{document.getElementById("saveText").focus();document.getElementById("saveText").select();notice("Text markiert – bitte manuell kopieren.");}
+  });
+  document.getElementById("loadSave").addEventListener("click", () => {
+    const text = document.getElementById("saveText").value;
+    const xp = text.match(/Gesamt-XP:\s*(\d+)/i);
+    if(!xp){notice("Kein gültiger Speicherstand gefunden. Prüfe die Zeile „Gesamt-XP“.");return;}
+    const doneLine = text.match(/Erledigte Aufgabenliste:\s*(.*)/i);
+    const validNames = tasks.map(t=>t.dataset.task);
+    const done = doneLine ? doneLine[1].split("|").map(x=>x.trim()).filter(x=>validNames.includes(x)) : [];
+    const date = text.match(/Datum:\s*(.+)/i);
+    const last = text.match(/Letzter abgeschlossener Abschnitt:\s*(.+)/i);
+    state.totalXp = Math.max(0, Number(xp[1]) || 0);
+    state.done = [...new Set(done)];
+    state.date = date ? date[1].trim() : today();
+    state.lastSection = last ? last[1].trim() : "—";
+    persist();render();notice("Speicherstand geladen. Aufgabenliste wurde übernommen, falls vorhanden.");
+  });
+  document.getElementById("newDay").addEventListener("click", () => {
+    if(!confirm("Neuen Tag starten? Deine Gesamt-XP und dein Level bleiben erhalten.")) return;
+    state.date = today(); state.done = []; state.lastSection = "—"; persist();render();notice("Neuer Tag gestartet. Gesamt-XP bleiben erhalten.");
+  });
+  document.getElementById("resetAll").addEventListener("click", () => {
+    if(!confirm("Wirklich ALLES zurücksetzen? Gesamt-XP, Level und Aufgaben werden gelöscht.")) return;
+    state = defaultState(); persist();render();document.getElementById("saveText").value="";notice("Alles zurückgesetzt.");
+  });
+  render();
+})();
+</script>
+</body>
+</html>
